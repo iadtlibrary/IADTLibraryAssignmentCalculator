@@ -1,0 +1,489 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Assignment Calculator</title>
+        <meta name="description" content="Assignment Calculator">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://unpkg.com/tachyons@4.5.5/css/tachyons.min.css">
+		
+    <style>
+
+      /* this is css to add styles */
+		  body { background-color: #fff}
+
+		  article { background-color: #fff}
+
+		  .fade-enter-active, .fade-leave-active {transition: opacity .5s}
+
+		  .fade-enter, .fade-leave-active {opacity: 0}
+		</style>
+</head>
+
+
+<body>
+
+  <main id="app" class="ph0 mh0 measure-wide f4 lh-copy center">
+
+  <aside name="top">
+
+    <!-- header image in an anchor tag that links to library website -->
+    <a href='https://library.iadt.ie' target='_blank'><img src='https://i.postimg.cc/1tjyBm4Y/IADT-Library-banner-narrow.png'  alt='IADT-Library-banner-narrow'/></a>
+
+    <h2>IADT Library's Assignment Calculator</h2>
+
+    <!-- buttons for selecting assignment type -->
+    <input type="radio" id="essay" value="essay" v-model="picked">
+    <label for="essay">Research Assignment (Essay)</label>
+    <br>
+    <input type="radio" id="presentation" value="presentation" v-model="picked">
+    <label for="presentation">Presentation with slides</label>
+    <br>
+    <input type="radio" id="posters" value="posters" v-model="picked">
+    <label for="posters">Posters</label>
+
+    <br /><br />
+
+    <!-- user selects dates here -->
+    <div>Begin Date: <input type="date" v-model="fromDate" placeholder="mm/dd/yyyy"></div><br />
+    <div>Due Date: <input type="date" v-model="toDate" placeholder="mm/dd/yyyy"></div>
+    
+    
+    <!-- <footer>test based on avcoder</footer> -->
+    
+  </aside>
+
+
+  <br /><br />
+
+    <!--When a user selects an assignment type and enters their dates. This if the information that will be displayed In the box: -->
+    <template v-if="picked === 'essay'">
+      <template v-if="isDatesPicked()">
+
+        <!-- grey info box -->
+        <article class="mw7 center ph3 ph5-ns br2 pv5 bg-light-gray  mb5">
+          <h2 class="fw2 f4 f3-ns lh-title mt0 mb3">
+            Some great resources on everything to do with academic writing of all types and styles:
+          </h2>
+    
+          <p class="fw1 f5 mt0 mb3 tl"> <!-- Added "tl" class here -->
+            <a class="link hover-orange" href="https://iadt.libguides.com/?b=s#collapse136270" target="_blank">Academic Skills Help Guides</a> from IADT Library<br />
+            <a class="link hover-orange" href="https://www.ucd.ie/writingcentre/about/handoutsandvideos/" target="_blank">UCD Writing Centre</a><br />
+            <a class="link hover-orange" href="https://owl.purdue.edu/site_map.html" target="_blank">Purdue OWL Writing Centre</a><br />
+            <a class="link hover-orange" href="https://writingcenter.unc.edu/tips-and-tools/" target="_blank">The Writing Centre at the University of North Carolina</a><br />
+          </p>
+        </article>
+
+        <!-- This is calling on the steps to be displayed -->
+        <steps v-bind:stepobject='ressay1'></steps>
+        <steps v-bind:stepobject='ressay2'></steps>
+        <steps v-bind:stepobject='ressay3'></steps>
+        <steps v-bind:stepobject='ressay4'></steps>
+        <steps v-bind:stepobject='ressay5'></steps>
+        <steps v-bind:stepobject='ressay6'></steps>
+
+
+        <!-- button -->
+        <a class="f6 link dim br-pill ba ph3 pv2 mb2 dib light-purple" href="#top">Back to top ^</a>
+        
+        <footer>
+          <p class="f6" style="text-align: center;">Based on the original <a href="https://www.lib.umn.edu/services/ac">assignment calculator from the University of Minnesota</a>
+            <br/>
+            Developed using <a href="https://github.com/avcoder/assignment_calculator">@avcoder's open source project</a>
+            <br/>
+            With thanks to Yasmine Radwan from UCC
+          </p>
+        </footer>
+
+      </template>
+    </template>
+
+
+    <!-- Presentations -->
+    
+    <template v-if="picked === 'presentation'">
+      <template v-if="isDatesPicked()">
+        <article class="mw7 center ph3 ph5-ns tc br2 pv5 bg-washed-green dark-green mb5">
+          <h2 class="fw2 f4 f3-ns lh-title mt0 mb3">
+            Creating a Presentation with slides
+          </h2>
+
+          <p class="fw1 f5 mt0 mb3">
+            For more information check the <a class="link hover-orange" href="https://www.library.iadt.ie">IADT Library Website</a>
+          </p>
+        </article>
+        <steps v-bind:stepobject='presentation1'></steps>
+        <steps v-bind:stepobject='presentation2'></steps>
+        <steps v-bind:stepobject='presentation3'></steps>
+        <steps v-bind:stepobject='presentation4'></steps>
+        <footer> <p  class="small-text">test based on avcoder</p></footer>
+        <a class="f6 link dim br-pill ba ph3 pv2 mb2 dib light-purple" href="#top">Back to top ^</a>
+      </template>
+    </template>
+    
+
+    <!-- Posters -->
+
+    <template v-if="picked === 'posters'">
+      <template v-if="isDatesPicked()">
+        <article class="mw7 center ph3 ph5-ns tc br2 pv5 bg-washed-green dark-green mb5">
+          <h2 class="fw2 f4 f3-ns lh-title mt0 mb3">
+            Creating a Presentation with slides
+          </h2>
+
+          <p class="fw1 f5 mt0 mb3">
+            For more information check the <a class="link hover-orange" href="https://www.library.iadt.ie">IADT Library Website</a>
+          </p>
+        </article>
+        <steps v-bind:stepobject='posters1'></steps>
+        <steps v-bind:stepobject='posters2'></steps>
+        <steps v-bind:stepobject='posters3'></steps>
+        <steps v-bind:stepobject='posters4'></steps>
+        
+        <a class="f6 link dim br-pill ba ph3 pv2 mb2 dib light-purple" href="#top">Back to top ^</a>
+
+      </template>
+    </template>
+
+  </main>
+
+
+  <!-- Importing Vue library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.0.5/vue.min.js"></script>
+
+
+<script>
+
+// STEPS CONTENT IN JSON OBJECT FORMAT
+//Essay Steps:
+var ressay1 = {
+      step: '1',
+      heading: 'Understand the question/Assignment',
+      todos: {
+          1: '<strong>Helpful Resources:</strong><br /> <a href="https://writingcenter.unc.edu/handouts/understanding-assignments/" target="_blank">Understanding Assignments </a> from The Writing Centre at the University of North Carolina <br /><br/> <a href="https://learninglab.rmit.edu.au/content/understand-assignment-task" target="_blank">Understand the assignment</a> task from RMIT University Learning Lab <br /> <br/> <a href="https://studyhub.fxplus.ac.uk/media/731" target="_blank">Understanding the Essay Brief </a>from the Study Hub <br/><br /> <a href="https://westernsydney.edu.au/__data/assets/pdf_file/0019/1082422/Analysing_the_assignment_question.pdf" target="_blank">Analysing the assignment question</a> from the Western Sydney University<br /> <br/> <a href="https://libguides.ncirl.ie/academic_writing_skills/understanding_assignments" target="_blank">Understanding Assignments </a>from the National College of Ireland<br /><br/> <a href="https://www.ucd.ie/t4cms/Starting%20an%20Essay%20and%20Choosing%20a%20Question%20(pdf.).pdf" target="_blank">Starting an Essay and Choosing a Question</a> from the UCD Writing Centre<br/><br/>  ',
+          2: 'When you are writing an assignment, it is important to <strong> answer the question being asked </strong> and not just the one you want to answer or the one you assume is being asked. One of the biggest challenges that students face both in assignments and exams is understanding the question that is actually being asked. It may be surprising, but this is where a lot of students make mistakes. <br /><br /> The first step to making sure that you submit a high-quality assignment is to fully understand the assignment question. Ensuring that your assignment remains on target is important, as you may lose marks for content that does not address the question properly, or that is in the wrong format.',
+          3: '<strong>Read and Review Instructions:</strong> <br /><br /> Read your assignment instructions. Note the word count and marking criteria, called a ruberic, which is usually available on the course page on The Hub. Double-check the due date and what format the assignment should be submitted in. Clarify any doubts with your lecturer if you need to.',
+          4: '<strong>Identify Key Components:</strong> <br /><br /> Look for keywords in your assignment question or brief that tell you what to do. Examples should be asking you to "evaluate", "describe", or "assess"? <br /><br /> Highlight or make note of any of the keywords that are related to your subject or course specifically (in Film, this might be "cinematography" or "genre analysis". In Psychology, it might be "cognitive development" or "behavioural therapy". In Business, it might be "ethics")',
+          5: '<strong>Analyse the Question:</strong> <br /><br /> When approaching an asssignment, the first thing to do is read the question or brief fully and carefully. Then, reread it. Look out for the following things: topic words, directional words, the focus of the question and the limiting scope. <br /> <br /> The topic words tell you what the question is about, while the directional words tell you what you need to do. <br /> <br /> The focus of the question is the specific angle or lens that the question takes regarding the subject matter. It may also be an opinion, a theory, or a specific viewpoint. <br /><br /> The limiting scope limits the focus of the question, e.g., to a particular time period, theory, place, number, etc. '
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '10'
+};
+
+var ressay2 = {
+      step: '2',
+      heading: 'Planning and pre-writing',
+      todos: {
+          1: '<strong>Helpful Resources:</strong> <br /><br /> <a href="https://writingcenter.fas.harvard.edu/pages/developing-thesis" target="_blank">Developing A Thesis</a> from the Harvard Writing Centre <br /><br /> <a href="https://www.yorku.ca/tutorial/prewriting/thesis.html" target="_blank">Pre-Writing Strategies tutorial</a> from the University of York <br /><br /> <a href="https://johnmcgarvey.com/apworld/student/thesiscreator.html" target="_blank">Thesis statement creator</a> <br /><br /> <a href="https://library.soton.ac.uk/outlining" target="_blank">Outlining guide</a> from the University of Southampton <br/> <br/> Once you have a solid grasp of the assignment requirements, the next step is to develop a comprehensive plan for your research and writing process. It is in this stage that you will refine down your topic deciding what you will write about and the argument you’re going to make in your assignment. ',
+          2: '<strong>Planning and Outlining:</strong> <br /><br /> Once you have decided what your argument is, making a plan or outline for your writing will make the process significantly easier. Your plan should include an outline of each <a href="https://libguides.hull.ac.uk/essays/main" target="_blank">paragraph </a> in  your essay and the key ideas, topics, and themes you want to write about.',
+          3: '<strong>Connect Back To Main Idea:</strong> <br /><br /> All the sections should link and connect back to the question/prompt in the assignment given to you. This plan can change as you research if needed. The plan will likely vary each time you do an assignment depending on what type of assignment it is and what is required for it.',
+          4: '<strong>Adjust and Be Flexible:</strong> <br /><br /> As you discover new sources and material, you will be able to slot them easily into the relevant sections of your asssignment. Your plan does not have to remain how it was when you first wrote it, it can be flexible.',
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '25'
+};
+
+var ressay3 = {
+      step: '3',
+      heading: 'Researching and gathering information',
+      todos: {
+          
+          1: '<strong>Helpful Resources:</strong> <br /><br /> <a href="https://iadt.libguides.com/101/searching" target="_blank">Searching IADT Library </a> <br/><br/> <a href="https://libguides.dbs.ie/assignmentplanning/research" target="_blank">Begin your research</a> from Dublin Business School  <br /><br /> <a href="https://researchguides.library.tufts.edu/c.php?g=1028738&p=9809251" target="_blank">First-Year Writing: The Research Process</a> from Tufts University<br /><br /> <a href="https://westernsydney.edu.au/studysmart/home/information_skills" target="_blank">Research Skills workshops and tools</a> from Western Sidney University <br /><br /> <a href="https://westernsydney.edu.au/__data/assets/pdf_file/0005/1177484/how_to_read_effectively.pdf" target="_blank">How to read effectively</a> from Western Sidney University <br/> <br/> <a href="https://iadt.libguides.com/advancedsearching" target="_blank">Advanced Searching </a> from IADT Library',
+          2: '<strong>Consider What Sources to Use:</strong> <br /><br /> Once you have your plan laid out, you can start researching. Consider what sources are most appropriate for your assignment, and use all the resources available to you. Make sure that sources you are using are <a href="https://iadt.libguides.com/c.php?g=681668&p=4861723#s-lg-box-wrapper-18006737" target="_blank"> appropriate academic </a> sources that you have thought critically about. Appropriate sources include Library databases, academic journals, and books. Depending on your subject area, multimedia sources may be appropriate too. As you move through the research process, your plan/structure can evolve too. As you discover new sources and material, slot them into your assignment outline. ',
+          3: '<strong>Use Each Source to Lead to Another:</strong> <br /><br /> If you are not sure where to start researching, look at some resources your lecturer may have given you. You can build up a basic understanding using these, and then research more specifically when you understand your topic area. The citations and references in these can point you to more specific research in a particular area. When researching, think outside the box - using keywords that are adjacent but related to your topic could give you other results and perspectives. For example, the different keywords "sport", "football", and "World Cup" might give you different results/sources.',
+          4: '<strong>Critically evaluating the sources:</strong> <br /><br /> As you research, remember to question each viewpoint you come across. Showing your lecturer that you are <a href="https://iadt.libguides.com/findinginfo" target="_blank"> engaged critically </a> will deliver a better result for you in the end.',
+          5: '<strong>Keep Track Of Your Research:</strong> <br /><br /> Make sure you keep track of your findings and sources. Software can help with this, such as <a href="https://iadt.libguides.com/zotero" target="_blank"> Zotero.</a> You can keep track of your reading material by theme or by where you found it. You could also divide the material you read into sections and topics as planned in your structure/outline. Doing this can help highlight if there is an area you have not researched yet. Details that you need to keep track of for each source include: <br /><br/> • Author or editor full name, <br/> • Title of book or article, <br/> • Date of publication or the copyright date, <br/> • Any authors cited within your rsearch (if you ahve their ideas in your paper), <br/> • Page numbers, <br/> • If it is a journal article, the journal name and the volume and issue of the article,<br/> • If it is a book: the publishers name, <br/> • If it is a website: the URL address and the date you accessed it '
+
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '50'
+};
+
+
+var ressay4 = {
+      step: '4',
+      heading: 'Write the first draft',
+      todos: {
+        1: '<strong>Helpful Resources:</strong><br /><br /> <a href="https://libguides.ncirl.ie/academic_writing_skills/writing_drafts" target="_blank">Writing Drafts</a> from the National College of Ireland <br /><br /> <a href="https://libguides.hull.ac.uk/essays/home" target="_blank">Essay writing </a>from the University of Hull <br /><br /> <a href="https://libguides.dbs.ie/assignmentplanning/write" target="_blank">Write! </a> from Dublin Business School<br /><br /> <a href="https://iadt.libguides.com/referencing" target="_blank">Refencing Help Guide </a>from IADT Library ',
+        2: '<strong>Get Something Down on the Page:</strong><br /><br /> Once you have planned and researched, you can finally start writing. The draft will be the worst version of your assignment, but dont worry. Later on in stage five is where you will rewrite and improve it. For the moment, the priority is getting your thoughts and research down on to the page. The steps you took to plan, structure, and research your argument will benefit you when it comes to writing the first draft.',
+        3: '<strong>Structure of a Written Assignment:</strong><br /><br /> Although each assignment is different, for an essay there is a general structure to follow: introduction, body paragraphs, conclusion. <br /><br /> Your <a href="https://libguides.hull.ac.uk/essays/intros" target="_blank"> introduction </a> is where you set the scene for your reader with any relevant background information. You state your plan for the essay and what argument you are making. <br /><br /> Each of your <a href="https://libguides.hull.ac.uk/essays/main" target="_blank"> body paragraphs </a> in an essay should focus on one point related to your central argument, which you will have identified as you planned your structure. Each paragraph should introduce its idea, and then be developed using evidence you found during your research. You will need to use <a href="https://iadt.libguides.com/referencing" target="_blank"> citations </a> here, as well as discussing what research exists on the topic. The points you make should flow from one to the other through your assignment, and the reader should be able to easily follow your train of thought and what point you are making. <br /><br /> Your <a href="https://libguides.hull.ac.uk/essays/conclusions" target="_blank"> conclusion </a> ties the threads/points of your argument together and make your final point to your reader.   '
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '75'
+};
+
+var ressay5 = {
+      step: '5',
+      heading: 'Refine and rewrite',
+      todos: {
+          1: '<strong>Helpful Resources:</strong><br /><br /> <a href="https://libguides.ncirl.ie/academic_writing_skills/revising_editing" target="_blank">Revising & Editing</a> from the National College of Ireland <br /><br /> <a href="https://writingcenter.unc.edu/tips-and-tools/revising-drafts/" target="_blank">Revising Drafts </a>The Writing Centre at the University of North Carolina  <br /><br /> Your first draft should not be the one you hand in, as it will have errors and things you wish to change.',
+          2: '<strong>Editing is Crucial:</strong><br /><br /> Editing and revising your first draft is crucial as it can result in a great improvement in your assignment outcome. Editing can make sure the work stricks to the assignment guidelines, such as word count. It is also when you can clean up your arguents and trim anything unnecessary to the assignment, reducing the word count if necessary.',
+          3: '<strong>Read Your Writing Out Loud:</strong><br /><br /> You can read what you have written out loud, which is a very effective tool to hear what does not flow well. It is also the easiest way to highlight spelling and grammar mistakes.',
+          4: '<strong>Ask Someone To Review What You Have Written:</strong><br /><br /> As you become familiar with what you have written, your brain can fill in the blanks and make assumptions. For this reason, getting  someone else to read over your essay can illustrate if the argument flows well or not. If they cannot follow what you are arguing, you may need to revisit how you are writing or explaining your argument. Make sure not to engage in <a href="https://iadt.libguides.com/plagiarism" target="_blank"> plagiarism </a> if having someone else read over your work.'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '90'
+};
+
+var ressay6 = {
+      step: '6',
+      heading: 'Finalise and submit',
+      todos: {
+          1: '<strong>Helpful Resources:</strong><br /><br /> <a href="https://writingcenter.unc.edu/tips-and-tools/editing-and-proofreading/" target="_blank">Editing and Proofreading </a> from The Writing Centre at the University of North Carolina',
+          2: '<strong>Take a Break Before Reviewing:</strong><br /><br /> Ideally you will allow several days, if not a week, before finishing your final draft and proofreading it for spelling and grammar mistakes. This allows you to approach the writing with fresh eyes and to more easily spot mistakes. You can also make sure your <a href="https://iadt.libguides.com/referencing" target="_blank"> citations and reference list/bibliography </a> are in the right format too. <a href="https://iadt.libguides.com/zotero" target="_blank"> Zotero </a> can make your reference list/bibliography for you in your correct citation style (Harvard, APA etc)',
+          3: '<strong>Follow Submission Requirements: </strong><br /><br />Make sure you have stuck to the assignment format guidelines here, e.g: spacing, font, font size, page numbers, student number included, title page etc.',
+          4: '<strong>Submit on Time:</strong><br /><br /> Once you are happy with your final product, you can submit your assignment. Well done!'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '100'
+};
+
+////////////////////////////////////////////////
+
+
+//Steps for Presentations:
+var presentation1 = {
+      step: '1',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '10'
+};
+
+var presentation2 = {
+      step: '2',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '20'
+};
+
+var presentation3 = {
+      step: '3',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '50'
+};
+
+var presentation4 = {
+      step: '4',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '100'
+};
+
+//////////////////////////////////////////////////////////
+
+//Steps for Posters:
+
+var posters1 = {
+      step: '1',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '10'
+};
+
+var posters2 = {
+      step: '2',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '40'
+};
+
+var posters3 = {
+      step: '3',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '70'
+};
+
+var posters4 = {
+      step: '4',
+      heading: 'content',
+      todos: {
+          1: 'content',
+          2: 'content',
+          3: 'content',
+          4: 'content'
+      },
+      linkURL: '',
+      linkText: '',
+      percentage: '100'
+};
+
+//////////////////////////////////////////
+
+
+// TEMPLATE for <steps>
+var Step = {
+  props: ['stepobject'],
+
+  //Maths stuff can be ignored
+  computed: {
+    calcDueDate: function() {
+      // initialize dates
+      var ISOsuffix = 'T00:00:00.000-05:00';
+      var fromDateObject = new Date(vm.fromDate + ISOsuffix);
+      var toDateObject = new Date(vm.toDate + ISOsuffix);
+      var daysBetween = this.diffDays(fromDateObject, toDateObject);
+      var numDays = this.calcNumDays(daysBetween, this.stepobject.percentage);
+      var dueDate_String = this.nextDueDate(fromDateObject, numDays);
+
+      return dueDate_String;
+    },
+
+    googleCalendarLink: function() {
+      // Ensure that calcDueDate is defined and callable within this context
+      var dueDate = this.calcDueDate; // Removed the function invocation ()
+
+      // Format due date for Google Calendar link
+      var startDateTime = dueDate.toISOString().split('.')[0].replace(/-|:/g, '');
+      var endDateTime = new Date(dueDate.getTime() + 24 * 60 * 60 * 1000).toISOString().split('.')[0].replace(/-|:/g, ''); // Add 1 day for end time
+
+      // Encode event name and details
+      var eventName = encodeURIComponent(this.stepobject.heading);
+      var details = encodeURIComponent(this.stepobject.todos[1]); // First todo as description
+      var location = ''; // Add location if any
+
+      // Construct Google Calendar link
+      return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${eventName}&dates=${startDateTime}Z/${endDateTime}Z&details=${details}&location=${location}`;
+    }
+  },
+
+  //More maths stuff can be ignored
+  methods: {
+    diffDays: function(fromDate, toDate) {
+      var oneDay = 24 * 60 * 60 * 1000;
+      return Math.round(Math.abs((fromDate.getTime() - toDate.getTime()) / oneDay));
+    },
+
+    calcNumDays: function(diffDays, percentage) {
+      return Math.floor(diffDays * percentage * 0.01);
+    },
+
+    nextDueDate: function(fromDate, numDays) {
+      var dueDate = new Date(fromDate);
+      dueDate.setDate(fromDate.getDate() + numDays);
+      return dueDate;
+    }
+  },
+
+  //below is the basic template that is used to display the steps
+  template: `
+    <transition name="fade">
+      <article class="pa3 mw8 br3 hidden ba b--black-10 mv4" style="background-color: #005EB8;">
+        <h3 class="f4 bg-near-white br3 br--top black-60 mv0 pv2 ph3" >
+          {{ stepobject.step }}. {{ stepobject.heading }} by {{ new Date(calcDueDate).toDateString() }}
+        </h3>
+        <ul class="list pl0 ml0 center mw8 ba b--light-silver br2 bg-washed-blue ">
+          <li v-for="(value, key) in stepobject.todos" class="ph3 pv3 bb b--light-silver">
+            <span v-html="value"></span>
+          </li>
+        </ul>
+
+        <a v-bind:href="googleCalendarLink" class="f6 link dim br2 ph3 pv2 mb2 dib light-purple white bg-white" target="_blank">
+           Add to Google Calendar
+        </a>
+
+      </article>
+    </transition>`
+
+};
+
+
+
+//Vue Code. Can ignore
+
+var vm = new Vue({
+  el: '#app',
+  data: {
+    fromDate: 'gettoday()',
+    toDate: '',
+    picked: 'essay',
+    stepobject: ''  // will be determined in the HTML <steps v-bind...>
+  },
+
+  methods: {
+    isDatesPicked: function()
+    {
+      // check to make sure both date fields are filled and in chronological order
+      if (this.fromDate !== '' && this.toDate !== '' && vm.toDate > vm.fromDate) {
+        return true;
+      } else {
+        return false;
+      }
+    },
+    created() {
+      console.log('Vue instance created');
+    },
+    mounted() {
+      console.log('Vue instance mounted');
+    }
+
+  },
+
+  components: {
+    'steps': Step
+  }
+});
+
+
+</script>
+</body></html>
